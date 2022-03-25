@@ -1,6 +1,7 @@
 var girl,zombie,bg,obs,gameover;
 var backgroundimg,girlimg,zombieimg,obsimg,gameoverimg;
 var score;
+
 function preload(){
 backgroundimg=loadImage("road.jpg");
 girlimg=loadImage("backgrond.jpg");
@@ -11,45 +12,72 @@ gameoverimg=loadImage("go.jpg")
 
 function setup() {
   createCanvas(575,400);
+
   bg=createSprite(width/1,400,);
   bg.addImage(backgroundimg);
   bg.scale=5;
-bg.velocityX=-4;
-girl = createSprite(width/3 ,height-250,20,20);
-girl.addImage(girlimg);
-girl.scale=0.6;
-zombie=createSprite(width/13,height-250,20,20);
-zombie.addImage(zombieimg);
-zombie.scale=0.5;
+  bg.velocityX= -4;
 
+  girl = createSprite(mouseX ,height-250,20,20);
+  girl.addImage(girlimg);
+  girl.scale=0.6;
 
+  /*zombie=createSprite(width/13,height-250,20,20);
+  zombie.addImage(zombieimg);
+  zombie.scale=0.5;*/
+
+  score = 0;
+
+  boxGroup = createGroup();
 }
+
+
+/* 
+      HI VEDYANSH I HAVE MADE A FEW CORRECTIONS THERE WERE TINY ERRORS AT 
+      CERTAIN PLACE AND ALSO I HAVE CHANGED THE STORY A BIT AS I DID NOT UNDERSTAND
+      HOW YOU WANTED TO MOVE AROUND TWO CHARACTERS.
+      SO KINDLY GO THROUGH IT AND ADD ANYTHING YOU WISH TO OR ELSE TELL ME I WLL MARK IT AS COMPLETED
+      IF YOU WANT TO KEEP IT THIS WAY
+*/
+
+
 
 function draw() {
   edges= createEdgeSprites();
+
+  girl.x = mouseX;
+  girl.y = mouseY;
   girl.collide(edges);
+
   if (bg.x < 0){
     bg.x = bg.width/2;
   }
+
   if(keyDown("space")&& girl.y >= 100) {
     girl.velocityY = -12;
-}
-if(girl.isTouching)(obs){
+  }
 
-}
-
-createObs();
-girl.y = World.mouseY;
-zombie.y=girl.y
-drawSprites();
-}
-function createObs(){
-if (World.frameCount % 575 == 0) {
+  if(boxGroup.isTouching(girl)){
+    boxGroup.destroyEach()
+    score += 5;
+  }
+  createObs();
   
-   var box = createSprite(Math.round(random(575, width-100),40, 10, 10));
-   box.addImage(obsImg);
- obs.scale=0.12;
- obs.velocityY = 5;
- obs.lifetime = 2399;
- }
+  drawSprites();
+
+  fill("maroon");
+  textSize(22);
+  text("Collect coins to win.",30,25);
+  text("Score: "+score,width - 200,25);
+}
+
+function createObs(){
+  if (World.frameCount % 50 == 0) {
+  var box = createSprite(Math.round(random(30, width-100)),40, 10, 10);
+  box.addImage(obsimg);
+  box.scale=0.12;
+  box.velocityY = 5;
+  box.lifetime = width/box.velocityY;
+  boxGroup.add(box);
+  }
 }
